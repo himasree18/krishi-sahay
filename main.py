@@ -5,7 +5,6 @@ import requests
 from dotenv import load_dotenv
 
 load_dotenv()
-
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 app = FastAPI()
@@ -23,10 +22,12 @@ def home():
     return {"message": "KrishiSahay backend running 🚀"}
 
 @app.get("/ask")
-def ask(q: str = Query(..., min_length=1)):
+def ask(q: str = Query(..., min_length=1), lang: str = "en"):
     try:
-        url = "https://api.groq.com/openai/v1/chat/completions"
+        language_map = {"en": "English", "te": "Telugu", "hi": "Hindi"}
+        lang_name = language_map.get(lang, "English")
 
+        url = "https://api.groq.com/openai/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {GROQ_API_KEY}",
             "Content-Type": "application/json"
@@ -35,20 +36,25 @@ def ask(q: str = Query(..., min_length=1)):
         payload = {
             "model": "llama-3.1-8b-instant",
             "messages": [
-                {"role": "system", "content": "You are an agriculture assistant for farmers. Answer simply."},
+                {
+                    "role": "system",
+                    "content": (
+                        "You are KrishiSahay, an AI assistant for Indian farmers. "
+                        f"Reply only in {lang_name}. "
+                        "Use very simple words and give step-by-step actionable advice."
+                    )
+                },
                 {"role": "user", "content": q}
             ],
-            "temperature": 0.5
+            "temperature": 0.4
         }
 
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        r = requests.post(url, headers=headers, json=payload, timeout=30)
+        if r.status_code != 200:
+            return {"answer": f"API error: {r.status_code} {r.text}"}
 
-        if response.status_code != 200:
-            return {"answer": f"API error: {response.status_code} {response.text}"}
-
-        data = response.json()
+        data = r.json()
         answer = data["choices"][0]["message"]["content"]
-
         return {"answer": answer}
 
     except Exception as e:

@@ -1,61 +1,109 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #a8e063, #56ab2f);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+:root{
+  --green:#2ecc71;
+  --orange:#ffb347;
+  --yellow:#f1c40f;
+  --dark:#0b1f14;
+  --glass: rgba(255,255,255,0.14);
+  --border: rgba(255,255,255,0.35);
+  --shadow: 0 20px 40px rgba(0,0,0,0.25);
 }
 
-.container {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  width: 95%;
-  max-width: 500px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  text-align: center;
+*{ box-sizing:border-box; }
+html,body{ height:100%; margin:0; font-family: "Poppins", sans-serif; color:#f4fff8; overflow-x:hidden;}
+
+.bg{
+  position:fixed; inset:0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #3cffb2 0%, transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, #7cff3c 0%, transparent 55%),
+    linear-gradient(135deg, #0b1f14 0%, #0e3a23 40%, #082015 100%);
+  overflow:hidden;
 }
 
-h1 {
-  margin-bottom: 5px;
+/* Floating leaves animation */
+.leaf{
+  position:absolute;
+  width:30px;height:30px;
+  background:url('https://cdn-icons-png.flaticon.com/512/415/415733.png') no-repeat center/contain;
+  top:-50px;
+  left:calc(var(--i) * 20%);
+  animation: fall 10s linear infinite;
+  opacity:0.7;
+}
+@keyframes fall{
+  0%{transform: translateY(0) rotate(0deg);}
+  100%{transform: translateY(110vh) rotate(360deg);}
 }
 
-.subtitle {
-  color: #555;
-  margin-bottom: 20px;
+.app{min-height:100%; display:grid; place-items:center; padding:24px; position:relative;}
+.hero{text-align:center; margin-bottom:18px;}
+.logo{
+  width:64px;height:64px;display:grid;place-items:center;font-size:32px;border-radius:16px;
+  background:linear-gradient(135deg,#2ecc71,#9bffcc);color:#06311d;margin:0 auto 10px;box-shadow:var(--shadow);
+  animation: logoPop 1s ease;
+}
+@keyframes logoPop{
+  0%{transform: scale(0);}
+  100%{transform: scale(1);}
 }
 
-textarea {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  resize: none;
-  font-size: 16px;
+.card{
+  width:min(520px,100%);
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition: transform 0.3s;
+}
+.card:hover{transform: translateY(-5px) scale(1.01);}
+
+.top-actions{display:flex;justify-content:flex-end;margin-bottom:10px;}
+.icon-btn{background:rgba(0,0,0,.35);border:1px solid var(--border);color:#eafff2;border-radius:12px;padding:8px 10px;cursor:pointer;transition:0.3s;}
+.icon-btn:hover{background:rgba(46,204,113,.35);}
+
+.row{display:flex;gap:10px;align-items:center;margin-bottom:10px;}
+.label{font-size:12px;opacity:.85;min-width:70px;}
+.select,.textarea{width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--border);background:rgba(0,0,0,.25);color:#eafff2;outline:none;transition:0.3s;}
+.textarea{min-height:120px;resize:vertical;margin:10px 0 12px;}
+.select:hover,.textarea:hover{background:rgba(46,204,113,0.1);}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{flex:1;padding:12px 16px;border-radius:16px;border:1px solid var(--border);background:rgba(0,0,0,.2);color:#eafff2;cursor:pointer;transition:0.3s;}
+.btn.primary{background:linear-gradient(135deg,#2ecc71,#9bffcc);color:#06311d;border:none;}
+.btn.primary:hover{transform: scale(1.05);}
+.btn.secondary{background:linear-gradient(135deg,#ffb347,#ffcc33);color:#0b1f14;border:none;}
+.btn.secondary:hover{transform: scale(1.05);}
+.btn.ghost:hover{background:rgba(255,255,255,0.1);}
+
+.mic{position:relative;overflow:hidden;}
+.mic.listening .glow{
+  position:absolute;inset:-10px;border-radius:20px;
+  background:radial-gradient(closest-side, rgba(46,204,113,.45), transparent 70%);
+  animation:pulse 1.2s infinite;
 }
 
-button {
-  margin-top: 15px;
-  padding: 12px 25px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  background: #2e7d32;
-  color: white;
-  cursor: pointer;
+@keyframes pulse{
+  0%{opacity:.2}50%{opacity:.7}100%{opacity:.2}
 }
 
-button:hover {
-  background: #1b5e20;
-}
+.chat{margin-top:12px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;}
+.bubble{max-width:90%;padding:14px 16px;border-radius:18px;line-height:1.5;border:1px solid var(--border);opacity:0;animation: fadeIn 0.5s forwards;}
+.bubble.user{align-self:flex-end;background:rgba(0,0,0,.35);}
+.bubble.ai{align-self:flex-start;background:linear-gradient(135deg, rgba(46,204,113,.25), rgba(155,255,204,.15));}
 
-.answer-box {
-  margin-top: 20px;
-  text-align: left;
-  background: #f3f3f3;
-  padding: 15px;
-  border-radius: 8px;
+@keyframes fadeIn{0%{opacity:0;transform: translateY(10px);}100%{opacity:1;transform: translateY(0);}}
+
+.footer{margin-top:12px;font-size:12px;opacity:.8;position:relative;}
+.floating-icons{position:absolute;right:10px;bottom:10px;font-size:18px;animation: floatIcons 3s ease-in-out infinite alternate;}
+@keyframes floatIcons{0%{transform:translateY(0);}100%{transform:translateY(-5px);}}
+
+body.light{color:#0b1f14;}
+body.light .bg{
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #c6ffd9 0%, transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, #dfffc2 0%, transparent 55%),
+    linear-gradient(135deg, #f2fff6 0%, #d7ffe9 50%, #c9ffe0 100%);
 }
+body.light .card, body.light .select, body.light .textarea{background:rgba(255,255,255,.8);color:#0b1f14;}

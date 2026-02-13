@@ -3,24 +3,60 @@
 <head>
   <meta charset="UTF-8" />
   <title>KrishiSahay 🌾</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-  <div class="container">
-    <h1>🌾 KrishiSahay</h1>
-    <p class="subtitle">Ask any farming question and get instant help</p>
-
-    <textarea id="question" placeholder="Type your question here...&#10;e.g. How to control aphids in mustard?"></textarea>
-
-    <button onclick="askQuestion()">Ask</button>
-
-    <div class="answer-box">
-      <h3>AI Answer:</h3>
-      <p id="answer">Your answer will appear here...</p>
-    </div>
+  <div class="bg">
+    <!-- Floating leaves animation -->
+    <div class="leaf" style="--i:1"></div>
+    <div class="leaf" style="--i:2"></div>
+    <div class="leaf" style="--i:3"></div>
+    <div class="leaf" style="--i:4"></div>
+    <div class="leaf" style="--i:5"></div>
   </div>
+
+  <main class="app">
+    <header class="hero">
+      <div class="logo">🌾</div>
+      <h1>KrishiSahay</h1>
+      <p>Ask in Telugu • Hindi • English</p>
+    </header>
+
+    <section class="card">
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" title="Toggle theme">🌗</button>
+      </div>
+
+      <div class="row">
+        <label class="label">Language</label>
+        <select id="language" class="select">
+          <option value="en">English</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="hi">हिंदी (Hindi)</option>
+        </select>
+      </div>
+
+      <textarea id="question" class="textarea" placeholder="Type or tap mic and speak your question..."></textarea>
+
+      <div class="actions">
+        <button class="btn ghost mic" id="micBtn" onclick="startVoice()">🎤 Speak <span class="glow"></span></button>
+        <button class="btn primary" onclick="askQuestion()">Ask AI ✨</button>
+        <input type="file" id="cropImage" accept="image/*" style="display:none;" onchange="uploadImage(event)" />
+        <button class="btn secondary" onclick="document.getElementById('cropImage').click()">📷 Upload Crop Photo</button>
+      </div>
+
+      <div class="chat" id="chat"></div>
+    </section>
+
+    <footer class="footer">
+      <span>Built for Farmers • Hackathon Demo</span>
+      <div class="floating-icons">
+        <span>🌱</span><span>🌿</span><span>🌾</span>
+      </div>
+    </footer>
+  </main>
 
   <script src="script.js"></script>
 </body>
